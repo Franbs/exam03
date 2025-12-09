@@ -1,55 +1,98 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   filter.c                                           :+:      :+:    :+:   */
+/*   filter_blind.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbanzo-s <fbanzo-s@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/02 17:53:01 by fbanzo-s          #+#    #+#             */
-/*   Updated: 2025/12/03 11:28:53 by fbanzo-s         ###   ########.fr       */
+/*   Created: 2025/12/09 16:39:46 by fbanzo-s          #+#    #+#             */
+/*   Updated: 2025/12/09 18:58:46 by fbanzo-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
 #include <unistd.h>
-#include <stdlib.h>
 #include <stdio.h>
-#define MAX_BUFFER_SIZE 1024
+#include <stdlib.h>
+#include <string.h>
 
-int	main(int ac, char **av)
+char	*ft_replace(char *str, char *filter, int start, int end)
 {
-	char	buffer[MAX_BUFFER_SIZE];
-	size_t	bytes_read;
+	while (start < end)
+	{
+		str[start] = '*';
+		start++;
+	}
+	return (str);
+}
+
+char	*ft_filter(char *str, char *filter)
+{
+	int	i;
+	int	j;
+	int	k;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == filter[0])
+		{
+			k = i;
+			j = 0;
+			while (str[k] && str[k] == filter[j])
+			{
+				k++;
+				j++;
+			}
+			if (j == strlen(filter))
+				ft_replace(str, filter, i, k);
+		}
+		i++;
+	}
+	return (str);
+}
+
+char	*ft_read_content(void)
+{
+	int		total_l;
+	int		i;
 	char	*content;
 	char	*tmp;
-	int		l;
-	int		i;
+	char	buffer[1024];
+	size_t	bytes_read;
 
-	if (ac != 2)
-		return (1);
+	total_l = 0;
 	content = NULL;
-	l = 0;
-	bytes_read = read(STDIN_FILENO, buffer, MAX_BUFFER_SIZE);
+	bytes_read = read(STDIN_FILENO, buffer, 1024);
 	while (bytes_read > 0)
 	{
-		tmp = (char *)realloc(content, l + bytes_read + 1);
+		buffer[bytes_read] = '\0';
+		tmp = (char *)realloc(content, total_l + bytes_read + 1);
 		if (!tmp)
-			return (free(content), 1);
+			return (free(content), NULL);
 		content = tmp;
 		i = 0;
 		while (i < bytes_read)
 		{
-			content[l + i] = buffer[i];
+			content[i + total_l] = buffer[i];
 			i++;
 		}
-		content[l + bytes_read] = '\0';
-		l += bytes_read;
-		bytes_read = read(STDIN_FILENO, buffer, MAX_BUFFER_SIZE);
+		content[bytes_read + total_l] = '\0';
+		total_l += bytes_read;
+		bytes_read = read(STDIN_FILENO, buffer, 1024);
 	}
-	printf("%s", content);
-	if (content)
-		free(content);
 	if (bytes_read == -1)
-		return (perror("error"), 1);
-	return (0);
+		return (perror("error"), NULL);
+	return (content);
+}
+
+int	main(int ac, char **av)
+{
+	char	*content;
+
+	if (ac != 2 || av[1][0] == '\0')
+		return (printf("args not valid"), 1);
+	content = ft_read_content();
+	content = ft_filter(content, av[1]);
+	printf("%s", content);
+	return (free(content), 0);
 }
