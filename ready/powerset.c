@@ -6,7 +6,7 @@
 /*   By: fbanzo-s <fbanzo-s@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 13:23:37 by fbanzo-s          #+#    #+#             */
-/*   Updated: 2025/12/14 23:00:17 by fbanzo-s         ###   ########.fr       */
+/*   Updated: 2025/12/15 02:08:50 by fbanzo-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ void	ft_print_sol(int *sol, int sol_idx, int zero_present)
 	printf("\n");
 }
 
-void	ft_powerset(int *numbers, int obj, int len, int *nums, int sum, int start, int sol_index, int *sol_found, int zero_present)
+void	ft_powerset(int *numbers, int obj, int len, int *nums,
+	int sum, int start, int sol_index, int *sol_found, int zero_present)
 {
 	int	i;
 

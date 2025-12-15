@@ -6,7 +6,7 @@
 /*   By: fbanzo-s <fbanzo-s@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:56:56 by fbanzo-s          #+#    #+#             */
-/*   Updated: 2025/12/11 20:10:03 by fbanzo-s         ###   ########.fr       */
+/*   Updated: 2025/12/15 01:49:41 by fbanzo-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,20 @@ int	ft_strcmp(char *s1, char *s2)
 	while (s1[i] && s2[i] && s1[i] == s2[i])
 		i++;
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
+
+char	*ft_strcpy(char *dest, char *src)
+{
+	int	i;
+
+	i = 0;
+	while (src[i])
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }
 
 void	ft_swap(char *c1, char *c2)
@@ -99,20 +113,6 @@ void	ft_sort_perms(char **perms, int factorial)
 		}
 		i++;
 	}
-}
-
-char	*ft_strcpy(char *dest, char *src)
-{
-	int	i;
-
-	i = 0;
-	while (src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
 }
 
 void	ft_permute(char **perms, char *str, size_t len, size_t start, int *count)
